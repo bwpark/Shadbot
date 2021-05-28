@@ -24,8 +24,14 @@ public class InteractionCreateListener implements EventListener<InteractionCreat
     public Mono<?> execute(InteractionCreateEvent event) {
         Telemetry.INTERACTING_USERS.add(event.getInteraction().getUser().getId().asLong());
 
+        // Ignore interactions coming from DM
         if (event.getInteraction().getGuildId().isEmpty()) {
             return event.reply(I18nManager.localize(Config.DEFAULT_LOCALE, "interaction.dm"));
+        }
+
+        // Ignore interactions coming from components
+        if(event.getCustomId().isPresent()) {
+            return Mono.empty();
         }
 
         return event.getInteraction().getChannel()

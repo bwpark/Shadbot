@@ -85,7 +85,11 @@ public class Context implements InteractionContext, I18nContext {
     }
 
     public String getCommandName() {
-        return this.event.getCommandName();
+        return this.event.getCommandName().orElseThrow();
+    }
+
+    public Snowflake getCommandId() {
+        return this.event.getCommandId().orElseThrow();
     }
 
     public String getLastCommandName() {

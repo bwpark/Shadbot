@@ -59,9 +59,9 @@ public class PollCmd extends Cmd {
         return context.getChannel()
                 .flatMap(channel -> DiscordUtil.requirePermissions(channel, Permission.ADD_REACTIONS))
                 .thenReturn(this.createPoll(context))
-                .doOnNext(pollManager -> this.managers.put(context.getEvent().getCommandId(), pollManager))
+                .doOnNext(pollManager -> this.managers.put(context.getCommandId(), pollManager))
                 .flatMap(PollManager::show)
-                .doOnError(__ -> this.managers.remove(context.getEvent().getCommandId()));
+                .doOnError(__ -> this.managers.remove(context.getCommandId()));
     }
 
     private PollManager createPoll(Context context) {
